@@ -29,7 +29,8 @@ Base URL: http://localhost:8000
 
 # register User
 
-1. POST /auth/register
+1. Register
+POST /auth/register
 Request Body
 {
   "email": "customer@example.com",
@@ -46,25 +47,28 @@ Response
   "role": "customer"
 }
 
-2. POST /auth/login
-   
+2. Login
+POST /auth/login
 Request Body
+
 {
   "email": "customer@example.com",
   "password": "securepass123"
 }
 
+
 Response
+
 {
-  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "access_token": "eyJhbGciOiJIUzI1NiIs...",
   "token_type": "bearer"
 }
 
-3. POST /kyc/upload
-   
-Request
-<Headers>
-Authorization: Bearer <token>
+Customer Routes
+
+3. Upload KYC
+POST /kyc/upload
+Headers: Authorization: Bearer <token>
 Request Body
 
 {
@@ -72,19 +76,21 @@ Request Body
   "document_number": "1234-5678-9012",
   "document_data": "base64_encoded_data_or_text"
 }
+
+
 Response
 
 {
   "message": "KYC uploaded successfully",
   "kyc_id": "671bd890abc...",
   "status": "SUBMITTED"
+}
 
-4. GET /users/me
-Request
-<Headers>
-Authorization: Bearer <token>
-
+4. View Profile
+GET /users/me
+Headers: Authorization: Bearer <token>
 Response
+
 {
   "id": "671be123abc...",
   "email": "customer@example.com",
@@ -95,23 +101,22 @@ Response
   "created_at": "2025-10-25T08:00:00.000Z"
 }
 
-5. GET /users/me/kyc-status
-Request
 
-<Headers>
-Authorization: Bearer <token>
-  
+5. View KYC Status
+GET /users/me/kyc-status
+Headers: Authorization: Bearer <token>
 Response
+
 {
   "kyc_status": "SUBMITTED"
 }
 
-6. GET /kyc/pending
-Request
-<Headers>
 
-text
-Authorization: Bearer <auditor_token>
+#Auditor Routes
+
+6. View Pending KYCs
+GET /kyc/pending
+Headers: Authorization: Bearer <auditor_token>
 Response
 
 [
@@ -126,13 +131,11 @@ Response
   }
 ]
 
-7. GET /kyc/{kyc_id}
-Request
-
-<Headers>
-Authorization: Bearer <auditor_token>
-
+7. View KYC Details
+GET /kyc/{kyc_id}
+Headers: Authorization: Bearer <auditor_token>
 Response
+
 {
   "kyc_id": "671bd890abc...",
   "user_id": "671be123abc...",
@@ -143,21 +146,20 @@ Response
   "submitted_at": "2025-10-25T09:30:00.000Z"
 }
 
-8. PUT /kyc/{kyc_id}/approve
-Request Headers
 
-Authorization: Bearer <auditor_token>
+8. Approve KYC
+PUT /kyc/{kyc_id}/approve
+Headers: Authorization: Bearer <auditor_token>
 Response
 
 {
   "message": "KYC approved successfully"
 }
 
-9. PUT /kyc/{kyc_id}/reject
-Request Headers
 
-
-Authorization: Bearer <auditor_token>
+9. Reject KYC
+PUT /kyc/{kyc_id}/reject
+Headers: Authorization: Bearer <auditor_token>
 Response
 
 {
@@ -280,3 +282,5 @@ pytest tests/test_main.py -v
 
 # Generate coverage report
 pytest tests/test_main.py --cov=app --cov-report=html
+
+
